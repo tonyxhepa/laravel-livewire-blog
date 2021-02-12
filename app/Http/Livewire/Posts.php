@@ -27,19 +27,20 @@ class Posts extends Component
         'body' => 'required|min:6',
         'newImage' => 'required:image|max:1024'
     ];
-
-    public function deletePost($id)
-    {
-        $post = Post::findOrFail($id);
-        Storage::delete('public/photos/'. $post->image);
-        $post->delete();
-    }
-
     public function createShowModal()
     {
         $this->resetValidation();
         $this->reset();
         $this->modalFormVisible = true;
+    }
+
+    public function updateShowModal($id)
+    {
+        $this->resetValidation();
+        $this->reset();
+        $this->modelId = $id;
+        $this->modalFormVisible = true;
+        $this->loadPost();
     }
 
     public function loadPost()
@@ -48,6 +49,23 @@ class Posts extends Component
         $this->title = $post->title;
         $this->body = $post->body;
         $this->image = $post->image;
+    }
+
+    public function savePost()
+    {
+        $this->validate();
+        $image_name = $this->newImage->getClientOriginalName().'-'. Carbon::now();
+        $this->newImage->storeAs('public/photos/', $image_name);
+
+        $post = new Post();
+        $post->user_id = auth()->user()->id;
+        $post->title = $this->title;
+        $post->body = $this->body;
+        $post->slug = Str::slug($this->title);
+        $post->image = $image_name;
+        $post->save();
+        $this->modalFormVisible = false;
+        $this->clearForm();
     }
 
     public function update()
@@ -72,29 +90,14 @@ class Posts extends Component
               'image' => $this->image
         ]);
         $this->modalFormVisible = false;
-
-        // $this->dispatchBrowserEvent('event-notification', [
-        //     'eventName' => 'Updated Page',
-        //     'eventMessage' => 'There is a page (' . $this->modelId . ') that has been updated!',
-        // ]);
     }
 
-    public function savePost()
+    
+    public function deletePost($id)
     {
-        $this->validate();
-        $image_name = $this->newImage->getClientOriginalName().'-'. Carbon::now();
-
-        $this->newImage->storeAs('public/photos/', $image_name);
-        $post = new Post();
-        $post->user_id = auth()->user()->id;
-        $post->title = $this->title;
-        $post->body = $this->body;
-        $post->slug = Str::slug($this->title);
-        $post->image = $image_name;
-        $post->save();
-        $this->modalFormVisible = false;
-
-        $this->clearForm();
+        $post = Post::findOrFail($id);
+        Storage::delete('public/photos/'. $post->image);
+        $post->delete();
     }
 
     public function clearForm()
@@ -102,15 +105,6 @@ class Posts extends Component
         $this->title = '';
         $this->body = '';
         $this->image = '';
-    }
-
-    public function updateShowModal($id)
-    {
-        $this->resetValidation();
-        $this->reset();
-        $this->modelId = $id;
-        $this->modalFormVisible = true;
-        $this->loadPost();
     }
 
     public function render()

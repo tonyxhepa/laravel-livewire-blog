@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Livewire\Posts;
 use App\Http\Livewire\PostShow;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +27,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/posts/{slug}', PostShow::class)->name('posts.show');
 Route::group(['middleware' => ['auth:sanctum','role:admin']], function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::get('admin/posts', Posts::class)->name('posts.index');
 });

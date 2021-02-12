@@ -1,7 +1,7 @@
-<div class="container mx-auto p-4 bg-gray-200">
+<div class="container mx-auto p-4 bg-gray-200 dark:bg-gray-800">
     <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="flex items-center justify-end px-4 py-3 text-right sm:px-6">
-        <x-jet-button wire:click="createShowModal">
+        <x-jet-button wire:click="createShowModal" class="bg-green-600 font-bold hover:bg-green-800">
             {{ __('Create') }}
         </x-jet-button>
     </div>
@@ -10,18 +10,18 @@
     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
       <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+          <thead class="bg-gray-50 dark:bg-gray-600 dark:text-gray-200">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                 Id
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                 Title
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                 Status
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                 Featured
               </th>
               <th scope="col" class="relative px-6 py-3">
@@ -46,7 +46,7 @@
                         <img class="w-8 h-8 rounded-full" src="{{ asset('storage/photos/'. $post->image) }}">
               </td>
                <td class="px-6 py-4 text-right text-sm">
-                      <x-jet-button wire:click="updateShowModal({{ $post->id }})">
+                      <x-jet-button wire:click="updateShowModal({{ $post->id }})"  class="bg-green-600 font-bold hover:bg-green-800">
                           {{ __('Update') }}
                       </x-jet-button>
                       <x-jet-danger-button wire:click="deletePost({{ $post->id }})">
